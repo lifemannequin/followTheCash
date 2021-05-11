@@ -1,10 +1,9 @@
 library(stringr)
 library(gridExtra)
 library(grid)
-setwd("~/Documents/FollowTheCash")
 dat = read.csv("newShoplist.csv",header=TRUE)
-#shopc=c("groceries","health&beauty","hobbies","transport","entertainment","electronics","clothes&acc","work")
-#shopt=c("veggies","meat","dairy","readyM","bakery","cupboard","yummy","drinks","cleaning","pets","grooming","makeup","treatment","pharmacy","perfume","craft","plants","restaurant","books","events","phones","pc","media","homeEl","car","public","clothes","shoes","jewelery","acc")
+#categories="groceries","health&beauty","hobbies","transport","entertainment","electronics","clothes&acc","work"
+#subcategories="veggies","meat","dairy","readyM","bakery","cupboard","yummy","drinks","cleaning","pets","grooming","makeup","treatment","pharmacy","perfume","craft","plants","restaurant","books","events","phones","pc","media","homeEl","car","public","clothes","shoes","jewelery","acc"
 shopc<-as.character(levels(factor(dat$shopclass)))
 
 shopty<-numeric(0)
@@ -17,10 +16,9 @@ for (i in 1:length(shopc)){
 a<-which(dat$shopclass==shopc[i])
 pty<-as.character(levels(factor(dat$shoptype[a])))
 shopty<-c(shopty,pty)
-#a=typeshop(dat$shopclass,dat$shoptype,shopc[i])
-#shopty<-c(shopty,typeshop(dat$shopclass,dat$shoptype,shopc[i]))
+
 }
-# shopty=as.character(levels(factor(dat$shoptype)))
+
 allclass<-numeric(length(shopc))
 lvlY<-levels(factor(dat$year))
 l<-0
@@ -78,7 +76,8 @@ for(l in 1:length(shopty)){
  Mtype<-rbind(Mtype,mtype)
 }
 } 
-
+write.csv(Mclass,"spesa_mensile.csv")
+write.csv(Mtype,"spesa_mensileSubtipi.csv")
 Mtype<-rbind(Mtype,c(0,0,alltype) ) 
 Mclass<-rbind(Mclass,c(0,0,allclass) ) 
 print(Mclass)
@@ -123,15 +122,5 @@ for (i in 1:length(shopc)){
 }
 dev.off()
 
-cuto<-length(Mtype[1,])/2
-table1<-Mtype[,1:cuto]
-table2<-Mtype[,c(1,2,(cuto+1):(2*cuto))]
-pdf("spesaTabelle.pdf", height=5, width=12)
-par(mfrow=c(3,1))
-title1=textGrob("Test title", gp=gpar(fontface="bold"))
-grid.arrange(grid.table(Mclass),ncol=1, nrow=1,top=title1)
-grid.arrange(grid.table(table1),ncol=1, nrow=1,top=textGrob("Spesa per Subtipi"))
-grid.arrange(grid.table(table2),ncol=1, nrow=1,top="Spesa per Subtipi")
 
-dev.off()
 

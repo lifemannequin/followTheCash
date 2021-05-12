@@ -76,8 +76,8 @@ for(l in 1:length(shopty)){
  Mtype<-rbind(Mtype,mtype)
 }
 } 
-write.csv(Mclass,"spesa_mensile.csv")
-write.csv(Mtype,"spesa_mensileSubtipi.csv")
+write.csv(Mclass,"monthly_expense.csv")
+write.csv(Mtype,"monthly_expense_subtype.csv")
 Mtype<-rbind(Mtype,c(0,0,alltype) ) 
 Mclass<-rbind(Mclass,c(0,0,allclass) ) 
 print(Mclass)
@@ -105,21 +105,6 @@ for (i in 1:l){
 }
 
 
-dev.off()
-pdf("spesaSubtipo.pdf",width = 8, height = 8)
-par(cex.main=2)
-
-for (i in 1:length(shopc)){
-    a<-which(dat$shopclass==shopc[i])
-   typ<-as.character(levels(factor(dat$shoptype[a])))
-    Main=paste(shopc[i],"Euros",Mclass[length(Mtype[,1])-1,i+2])
-    indi[1]=which(ifelse(colnames(Mtype)==typ[1],1,0)==1)
-    indi[2]=which(ifelse(colnames(Mtype)==typ[length(typ)],1,0)==1)
-    bars<-Mtype[length(Mtype[,1])-1,indi[1]:indi[2]]
-    bp<-barplot(Mtype[length(Mtype[,1])-1,indi[1]:indi[2]], ylim=c(0.0,max(bars)+10),col=rainbow(bars), beside = TRUE,ylab="Expenditure",las=2,cex.names = 1,main=Main)
-    text(x=bp, y=bars, labels=bars, pos=3, xpd=NA,cex = 0.8,las=2)
-    
-}
 dev.off()
 
 
